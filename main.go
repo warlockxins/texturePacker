@@ -63,7 +63,7 @@ func doSample() {
 	imagesWithBounds := config.ToImagesWithBounds("./testSamples/")
 
 	imagesWithBounds.ToSpritesheet("./testSamples/spriteSheet.png")
-
+	imagesWithBounds.ToSpritesheetConfig("./testSamples/spriteSheet.json")
 }
 
 func main() {

@@ -55,6 +55,67 @@ func (a SortByHeight) Less(i, j int) bool {
 }
 func (a SortByHeight) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 
+func (imagesWithBounds *ImagesWithBounds) ToSpritesheetConfig(fileName string) {
+	// Assemble frames
+	frames := []space.ImageFrame{}
+
+	for i := 0; i < 3; i++ {
+		img := (*imagesWithBounds)[i]
+		frames = append(frames,
+			space.ImageFrame{
+				FileName: img.ImageName,
+				Rotated:  false,
+				Trimmed:  true,
+				SourceSize: space.FrameSize{
+					W: img.Image.Bounds().Max.X,
+					H: img.Image.Bounds().Max.Y,
+				},
+				SpriteSourceSize: space.Frame{
+					X: img.NonAlphaBounds.Min.X,
+					Y: img.NonAlphaBounds.Min.Y,
+					W: img.NonAlphaSize.Width,
+					H: img.NonAlphaSize.Height,
+				},
+				Frame: space.Frame{
+					X: img.TargetTextureBounds.X,
+					Y: img.TargetTextureBounds.Y,
+					W: img.TargetTextureBounds.Width,
+					H: img.TargetTextureBounds.Height,
+				},
+			},
+		)
+	}
+
+	// compose Atlas
+	atlas := space.SpriteAtlas{
+		Meta: space.Meta{
+			App:     "https://github.com/warlockxins/texturePacker.git",
+			Version: "1",
+		},
+		Textures: []space.Texture{
+			{
+				Image:  "spriteSheet.png",
+				Format: "RGBA8888",
+				Size: space.FrameSize{
+					W: 1024,
+					H: 1024,
+				},
+				Frames: frames,
+			},
+		},
+	}
+
+	fmt.Println("--->", atlas)
+
+	atlasJson, _ := json.Marshal(atlas)
+	fmt.Println(string(atlasJson))
+
+	err := os.WriteFile(fileName, atlasJson, 0644)
+	if err != nil {
+		panic("error writting TextureAtlas config" + err.Error())
+	}
+}
+
 func (imagesWithBounds *ImagesWithBounds) ToSpritesheet(fileName string) {
 	upLeft := image.Point{0, 0}
 	lowRight := image.Point{1024, 1024}
