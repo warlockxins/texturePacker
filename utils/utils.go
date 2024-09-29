@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"image/draw"
+	"image/png"
 	"math"
 	"os"
 	"path/filepath"
@@ -52,6 +54,44 @@ func (a SortByHeight) Less(i, j int) bool {
 	return a[i].NonAlphaSize.Height > a[j].NonAlphaSize.Height
 }
 func (a SortByHeight) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+
+func (imagesWithBounds *ImagesWithBounds) ToSpritesheet(fileName string) {
+	upLeft := image.Point{0, 0}
+	lowRight := image.Point{1024, 1024}
+
+	targetImage := image.NewRGBA(image.Rectangle{upLeft, lowRight})
+
+	for i := 0; i < len(*imagesWithBounds); i++ {
+		imageMeta := (*imagesWithBounds)[i]
+
+		// fmt.Println("->", imageMeta.TargetTextureBounds)
+		draw.Draw(
+			targetImage,
+			// targetImage.Bounds(),
+			image.Rect(
+				imageMeta.TargetTextureBounds.X,
+				imageMeta.TargetTextureBounds.Y,
+
+				1024, 1024,
+			),
+			imageMeta.Image,
+			// imageMeta.Image.Bounds().Min,
+			image.Point{
+				imageMeta.NonAlphaBounds.Min.X,
+				imageMeta.NonAlphaBounds.Min.Y,
+			},
+			// image.ZP,
+			draw.Over,
+		)
+	}
+
+	// encode as png
+	f, err := os.Create(fileName)
+	if err != nil {
+		panic(err)
+	}
+	png.Encode(f, targetImage)
+}
 
 func newBounds() *space.Bounds {
 	return &space.Bounds{X: 0, Y: 0, Width: 0, Height: 0}

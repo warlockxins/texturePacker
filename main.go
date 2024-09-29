@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"image"
-	"image/draw"
 	"image/png"
 	"os"
 	"path/filepath"
@@ -63,41 +62,7 @@ func doSample() {
 
 	imagesWithBounds := config.ToImagesWithBounds("./testSamples/")
 
-	upLeft := image.Point{0, 0}
-	lowRight := image.Point{1024, 1024}
-
-	targetImage := image.NewRGBA(image.Rectangle{upLeft, lowRight})
-
-	for i := 0; i < len(*imagesWithBounds); i++ {
-		imageMeta := (*imagesWithBounds)[i]
-
-		fmt.Println("->", imageMeta.TargetTextureBounds)
-		draw.Draw(
-			targetImage,
-			// targetImage.Bounds(),
-			image.Rect(
-				imageMeta.TargetTextureBounds.X,
-				imageMeta.TargetTextureBounds.Y,
-
-				1024, 1024,
-			),
-			imageMeta.Image,
-			// imageMeta.Image.Bounds().Min,
-			image.Point{
-				imageMeta.NonAlphaBounds.Min.X,
-				imageMeta.NonAlphaBounds.Min.Y,
-			},
-			// image.ZP,
-			draw.Over,
-		)
-	}
-
-	// encode as png
-	f, err := os.Create("./testSamples/spriteSheet.png")
-	if err != nil {
-		panic(err)
-	}
-	png.Encode(f, targetImage)
+	imagesWithBounds.ToSpritesheet("./testSamples/spriteSheet.png")
 
 }
 
