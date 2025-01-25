@@ -59,7 +59,7 @@ func (imagesWithBounds *ImagesWithBounds) ToSpritesheetConfig(fileName string) {
 	// Assemble frames
 	frames := []space.ImageFrame{}
 
-	for i := 0; i < 3; i++ {
+	for i := 0; i < len(*imagesWithBounds); i++ {
 		img := (*imagesWithBounds)[i]
 		frames = append(frames,
 			space.ImageFrame{
@@ -118,7 +118,7 @@ func (imagesWithBounds *ImagesWithBounds) ToSpritesheetConfig(fileName string) {
 
 func (imagesWithBounds *ImagesWithBounds) ToSpritesheet(fileName string) {
 	upLeft := image.Point{0, 0}
-	lowRight := image.Point{1024, 1024}
+	lowRight := image.Point{2048, 1024}
 
 	targetImage := image.NewRGBA(image.Rectangle{upLeft, lowRight})
 
@@ -133,7 +133,7 @@ func (imagesWithBounds *ImagesWithBounds) ToSpritesheet(fileName string) {
 				imageMeta.TargetTextureBounds.X,
 				imageMeta.TargetTextureBounds.Y,
 
-				1024, 1024,
+				2048, 1024,
 			),
 			imageMeta.Image,
 			// imageMeta.Image.Bounds().Min,
@@ -192,7 +192,7 @@ func (ac *AnimationConfig) ToImagesWithBounds(folderPathWithConfig string) *Imag
 
 	sort.Sort(SortByHeight(imageSpaces))
 
-	sheetSpaces := space.NewSpace(space.Bounds{X: 0, Y: 0, Width: 1024, Height: 1024}, false)
+	sheetSpaces := space.NewSpace(space.Bounds{X: 0, Y: 0, Width: 2048, Height: 1024}, false)
 
 	for i := 0; i < len(imageSpaces); i++ {
 		imageForSpace := imageSpaces[i]

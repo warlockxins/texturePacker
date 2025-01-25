@@ -4,7 +4,7 @@ package main
 
 import (
 	// "fmt"
-	"flag"
+	// "flag"
 	"fmt"
 	"image"
 	"image/png"
@@ -68,22 +68,22 @@ func doSample() {
 
 func main() {
 	doSample()
-	inFolderPtr := flag.String("in", "", "an input folder path string")
-	outFolderPtr := flag.String("out", "", "an output folder path string for texture atlas")
-	flag.Parse()
-
-	if *inFolderPtr == "" {
-		println("input folder not provided")
-		os.Exit(1)
-	}
-
-	if *outFolderPtr == "" {
-		println("output folder not provided")
-		os.Exit(1)
-	}
-
-	fmt.Println("input:", *inFolderPtr)
-	fmt.Println("output:", *outFolderPtr)
+	// inFolderPtr := flag.String("in", "", "an input folder path string")
+	// outFolderPtr := flag.String("out", "", "an output folder path string for texture atlas")
+	// flag.Parse()
+	//
+	// if *inFolderPtr == "" {
+	// 	println("input folder not provided")
+	// 	os.Exit(1)
+	// }
+	//
+	// if *outFolderPtr == "" {
+	// 	println("output folder not provided")
+	// 	os.Exit(1)
+	// }
+	//
+	// fmt.Println("input:", *inFolderPtr)
+	// fmt.Println("output:", *outFolderPtr)
 }
 
 func process(inFolderPtr *string, outFolderPtr *string) {

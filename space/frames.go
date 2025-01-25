@@ -26,7 +26,7 @@ spriteSourceSize: {x: 1, y: 0, w: 66, h: 66}
 trimmed: true
 */
 type ImageFrame struct {
-	FileName         string    `json:"fileName"` // name of a file frame
+	FileName         string    `json:"filename"` // name of a file frame
 	Frame            Frame     `json:"frame"`
 	Rotated          bool      `json:"rotated"`
 	SourceSize       FrameSize `json:"sourceSize"`
